@@ -1,6 +1,7 @@
 package sdk
 
 import (
+	"sort"
 	"bytes"
 	"crypto/hmac"
 	"crypto/sha256"
@@ -247,10 +248,19 @@ func UrlEncode(data map[string]interface{}) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	querys := []string{}
-	for k, v := range params {
-		querys = append(querys, fmt.Sprintf("%s=%s", k, url.QueryEscape(v)))
+
+	//对key排序
+	keys := make([]string, 0, len(params));
+	for k := range params {
+		keys = append(keys, k)
 	}
+	sort.Strings(keys)
+
+	querys := []string{}
+	for _, k := range keys {
+		querys = append(querys, fmt.Sprintf("%s=%s", k, url.QueryEscape(params[k])))
+	}
+
 	return strings.Join(querys, "&"), nil
 }
 
@@ -263,21 +273,6 @@ func hmacSha256(encodedData string, appSecret string) (hashedSig string) {
 	return  hashedSig
 }
 
-//处理json字符串中的非ascii字符
-func jsonToUnicode(raw []byte) []byte {
-	//fmt.Println("byte 0", []byte(toStr))
-	toStr := strconv.QuoteToASCII(string(raw))	//全字符串非ascii转ascii
-	//fmt.Println("byte 1", []byte(toStr))
-	//fmt.Printf("0 %s\n", toStr)
-	toStr = strings.Trim(toStr, `"`)		//转换后，前后会多加上"，需要去掉
-	//fmt.Println("byte 2", []byte(toStr))
-	//fmt.Printf("1 %s\n", toStr)
-	toStr = strings.Replace(toStr, `\"`, `"`, -1)	//转换后，json字符串中的"，会转为\"，需要再次赚回来
-	//fmt.Println("byte 3", []byte(toStr))
-	//fmt.Printf("2 %s\n", toStr)
-	return []byte(toStr)
-}
-
 //生成body 里的sign
 func (sdk *Sdk) Sign(method string, signData map[string]interface{}) (sign string) {
 	bf := &bytes.Buffer{}
@@ -288,7 +283,7 @@ func (sdk *Sdk) Sign(method string, signData map[string]interface{}) (sign strin
 	b := bf.Bytes()
 	// json编码后，go会自动追加\n，去掉 https://github.com/golang/go/issues/7767
 	b = bytes.TrimSpace(b)
-	b = jsonToUnicode(b)
+	//fmt.Println("raw json: ", string(b))
 	encodeString := base64.StdEncoding.EncodeToString(b)
 	tmpencodeString := strings.ReplaceAll(encodeString, "+", "-")
 	encodedPayload := strings.ReplaceAll(tmpencodeString, "/", "_")

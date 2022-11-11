@@ -39,7 +39,7 @@ func main() {
 			"page": 1,
 			"pagesize": 10,
 			"data": map[string]interface{}{
-				"name": "name名称",
+				"name": "name名称~!@#$%^&*()_+{}|:\"?><`1234567890-=[]\\';.,/",
 				"domain": "baidu.com",
 			},
 		},
@@ -69,7 +69,7 @@ func main() {
 			"name": 1,
 			"age": 10,
 			"data": map[string]interface{}{
-				"name": "name名称",
+				"name": "name名称~!@#$%^&*()_+{}|:\"?><`1234567890-=[]\\';.,/",
 				"domain": "baidu.com",
 			},
 		},
@@ -124,7 +124,7 @@ func main() {
 			"name": 1,
 			"age": 10,
 			"data": map[string]interface{}{
-				"name": "name名称",
+				"name": "name名称~!@#$%^&*()_+{}|:\"?><`1234567890-=[]\\';.,/",
 				"domain": "baidu.com",
 			},
 		},
