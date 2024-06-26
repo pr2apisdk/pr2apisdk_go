@@ -30,7 +30,7 @@
 ## 安装
 
 ```
-go get github.com/pr2apisdk/pr2apisdk_go/sdk
+go get github.com/pr2apisdk/pr2apisdk_go
 ```
 
 ### 使用
@@ -41,7 +41,7 @@ package main
 
 import (
         "os"
-        "github.com/pr2apisdk/pr2apisdk_go/sdk"
+        sdk "github.com/pr2apisdk/pr2apisdk_go"
         "fmt"
 )
 

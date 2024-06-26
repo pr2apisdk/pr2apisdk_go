@@ -2,7 +2,7 @@ package main
 
 import (
 	"os"
-	"github.com/pr2apisdk/pr2apisdk_go/sdk"
+	sdk "github.com/pr2apisdk/pr2apisdk_go"
 	"fmt"
 )
 
